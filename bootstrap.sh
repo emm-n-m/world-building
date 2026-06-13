@@ -2,6 +2,7 @@
 set -euo pipefail
 
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+python_version="3.14"
 
 command_exists() {
     command -v "$1" >/dev/null 2>&1
@@ -27,6 +28,18 @@ if ! command_exists uv; then
     curl -LsSf https://astral.sh/uv/install.sh | sh
 fi
 
+if command_exists uv; then
+    uv_cmd="$(command -v uv)"
+elif [[ -x "$HOME/.local/bin/uv" ]]; then
+    uv_cmd="$HOME/.local/bin/uv"
+else
+    echo "uv was not found after installation." >&2
+    exit 1
+fi
+
+echo "Installing Python $python_version through uv..."
+"$uv_cmd" python install "$python_version" --default --upgrade
+
 echo "Installing fnm..."
 if ! command_exists fnm; then
     curl -fsSL https://fnm.vercel.app/install | bash
@@ -48,6 +61,10 @@ fi
 cat <<'EOF'
 
 Bootstrap complete.
+
+Python is managed by uv. Restart your shell and check it with:
+  python --version
+  uv python list --only-installed
 
 If fnm was installed during this run, restart your shell and run:
   fnm install --lts

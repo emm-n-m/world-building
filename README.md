@@ -6,7 +6,7 @@ Shared workstation setup for Linux machines.
 
 - Base development packages from `packages.txt`
 - Rust through `rustup`
-- Python tooling through `uv`
+- Python 3.14 and tooling through `uv`
 - Node.js through `fnm`
 - Global npm tools: `@openai/codex` and `pnpm`
 - Personal shell, Git, and global ignore configuration
@@ -21,6 +21,8 @@ Shared workstation setup for Linux machines.
 Then restart your shell and run:
 
 ```bash
+python --version
+uv python list --only-installed
 fnm install --lts
 fnm default lts-latest
 ```

@@ -1,5 +1,5 @@
 # Personal paths
-export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
 # Preferred directories
 export SRC="$HOME/src"
