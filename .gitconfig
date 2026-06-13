@@ -1,0 +1,16 @@
+[user]
+    name = Emmanouil Mavrogiorgis
+    email = YOUR_EMAIL_HERE
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = true
+
+[rebase]
+    autoStash = true
+
+[core]
+    editor = code --wait
+    excludesfile = ~/.gitignore_global

@@ -1,0 +1,20 @@
+# Personal paths
+export PATH="$HOME/bin:$PATH"
+
+# Preferred directories
+export SRC="$HOME/src"
+
+# Aliases
+alias ll='ls -lah'
+alias gs='git status'
+alias gd='git diff'
+alias gl='git log --oneline --graph --decorate -20'
+
+# Git helpers
+alias gsave='git add -A && git commit -m "WIP"'
+alias gsync='git pull --rebase --autostash'
+
+# Navigation
+alias work='cd ~/src/work'
+alias research='cd ~/src/research'
+alias scratch='cd ~/src/scratch'
