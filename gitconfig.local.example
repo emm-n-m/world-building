@@ -1,0 +1,28 @@
+# Template for ~/.gitconfig.local  (copy to $HOME, drop the .example, fill in).
+# Holds work identities and employer-specific settings. Pulled in by the
+# [include] line in the committed .gitconfig. Kept out of git on purpose.
+#
+# Requires git >= 2.36 for hasconfig:remote.*.url.
+# Verify with:  git -C <repo> config user.email
+
+# --- Optional: employer credential helper -----------------------------------
+#[credential "https://git.example.com"]
+#	provider = generic
+
+# --- Identity selected by the repo's remote URL -----------------------------
+# Match all URL forms (ssh shorthand, ssh:// with custom port, https) so the
+# right identity loads no matter how the remote was added. Each points at a
+# tiny leaf file (see below).
+#[includeIf "hasconfig:remote.*.url:git@git.example.com:**"]
+#	path = ~/.gitconfig-example
+#[includeIf "hasconfig:remote.*.url:ssh://git@git.example.com:2222/**"]
+#	path = ~/.gitconfig-example
+#[includeIf "hasconfig:remote.*.url:https://git.example.com/**"]
+#	path = ~/.gitconfig-example
+
+# --- Leaf file: ~/.gitconfig-example ----------------------------------------
+# Just the identity for that context:
+#
+#   [user]
+#       name = your-work-username
+#       email = you@example.com

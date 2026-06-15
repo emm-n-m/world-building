@@ -1,2 +1,17 @@
 *.log
 .dotfiles-backup/
+
+# Never commit SSH private keys
+id_*
+*.pem
+*.key
+
+# Local / work-specific config — kept out of git by design (employer infra,
+# work identities). The .example templates above are committed; the real files
+# live only in $HOME on the machines that need them.
+.gitconfig.local
+.gitconfig-*
+config.local
+ssh_config.local
+# Leftover Windows-origin ssh config copy (superseded by ssh_config)
+/config

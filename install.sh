@@ -26,3 +26,9 @@ link_file() {
 link_file "$repo_dir/.bashrc.local" "$HOME/.bashrc.local"
 link_file "$repo_dir/.gitconfig" "$HOME/.gitconfig"
 link_file "$repo_dir/.gitignore_global" "$HOME/.gitignore_global"
+
+# Personal SSH client config. Work hosts come from ~/.ssh/config.local, which
+# is created per-machine and never symlinked from the repo (see option B).
+mkdir -p "$HOME/.ssh"
+chmod 700 "$HOME/.ssh"
+link_file "$repo_dir/ssh_config" "$HOME/.ssh/config"

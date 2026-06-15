@@ -1,16 +1,25 @@
-[user]
-    name = Emmanouil Mavrogiorgis
-    email = YOUR_EMAIL_HERE
+[core]
+	autocrlf = input
+	editor = vim
+	excludesfile = ~/.gitignore_global
 
 [init]
-    defaultBranch = main
+	defaultBranch = main
 
 [pull]
-    rebase = true
+	rebase = true
 
 [rebase]
-    autoStash = true
+	autoStash = true
 
-[core]
-    editor = code --wait
-    excludesfile = ~/.gitignore_global
+[user]
+	# Default personal identity. Work identities are NOT here — they live in
+	# ~/.gitconfig.local (untracked, present only on work machines).
+	name = emm-n-m
+	email = emm.n.black@gmail.com
+
+# Local, machine-specific overrides: work identities, employer credential
+# helpers, internal hosts. A missing file is silently ignored, so personal
+# devices simply use the default identity above. See gitconfig.local.example.
+[include]
+	path = ~/.gitconfig.local

@@ -1,0 +1,11 @@
+# Template for ~/.ssh/config.local  (copy to $HOME/.ssh/, drop the .example).
+# Holds work hosts: internal hostnames, custom ports, and work-specific keys.
+# Pulled in by the `Include ~/.ssh/config.local` line in the committed ssh_config.
+# Kept out of git on purpose. Private keys are NEVER stored in the repo.
+
+#Host git.example.com
+#    HostName git.example.com
+#    User git
+#    Port 2222
+#    IdentityFile ~/.ssh/id_ed25519_example
+#    IdentitiesOnly yes

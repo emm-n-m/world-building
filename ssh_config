@@ -1,0 +1,14 @@
+# Personal SSH client config — synced via the dotfiles repo.
+# install.sh symlinks this to ~/.ssh/config.
+#
+# Work hosts (internal hostnames, custom ports, work keys) live in
+# ~/.ssh/config.local — untracked, present only on work machines.
+# A missing Include is non-fatal, so this is safe on personal-only machines.
+Include ~/.ssh/config.local
+
+# GitHub Personal Account
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519
+    IdentitiesOnly yes
