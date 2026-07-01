@@ -31,6 +31,7 @@ fnm default lts-latest
 
 - `bootstrap.sh`: installs packages and language/tool managers.
 - `install.sh`: symlinks dotfiles into `$HOME`, backing up existing files first.
+- `setup-ssh-keys.sh`: generates this machine's SSH keys and prints the public keys to register.
 - `packages.txt`: apt packages for a baseline development environment.
 - `.bashrc.local`: aliases and local shell variables.
 - `.gitconfig`: Git defaults + personal identity.
@@ -63,8 +64,22 @@ chmod 600 ~/.ssh/config.local
 ```
 
 Work identities are selected automatically by the repo's remote URL
-(`includeIf "hasconfig:remote.*.url:…"`, requires git >= 2.36). Private keys are
-never stored in this repo.
+(`includeIf "hasconfig:remote.*.url:…"`, requires git >= 2.36).
+
+## SSH Keys (per machine)
+
+Private keys are never stored in this repo. Instead, each machine generates its
+own keypairs so a lost or retired machine can be revoked at each host
+individually, without rotating any other machine's keys:
+
+```bash
+./setup-ssh-keys.sh
+```
+
+It creates the keys the SSH config expects (skipping any that already exist),
+tags each with `user@hostname`, and prints the public keys plus where to
+register them. Run it on every new machine and add the printed keys to GitHub /
+the GitLab instances.
 
 ## Shell Integration
 
