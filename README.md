@@ -32,6 +32,7 @@ fnm default lts-latest
 - `bootstrap.sh`: installs packages and language/tool managers.
 - `install.sh`: symlinks dotfiles into `$HOME`, backing up existing files first.
 - `setup-ssh-keys.sh`: generates this machine's SSH keys and prints the public keys to register.
+- `check.sh`: read-only drift check — verifies symlinks, packages, toolchains, SSH keys, work identities, and repo sync.
 - `packages.txt`: apt packages for a baseline development environment.
 - `.bashrc.local`: aliases and local shell variables.
 - `.gitconfig`: Git defaults + personal identity.
@@ -80,6 +81,22 @@ It creates the keys the SSH config expects (skipping any that already exist),
 tags each with `user@hostname`, and prints the public keys plus where to
 register them. Run it on every new machine and add the printed keys to GitHub /
 the GitLab instances.
+
+## Checking For Drift
+
+Run the doctor anytime to see whether a machine still matches the repo instead
+of waiting for something to break:
+
+```bash
+./check.sh
+```
+
+It's read-only and reports each item as `ok` / `warn` / `FAIL`, exiting non-zero
+on any hard failure (so it can gate a login hook or CI). It checks that the
+dotfile symlinks point into the repo, every `packages.txt` package is installed,
+the toolchains (`rustup`, `uv`, `fnm`, `gh`, node/npm) are present, every SSH key
+referenced by the config exists, work identities resolve, and the repo has no
+uncommitted or unpushed changes.
 
 ## Shell Integration
 
