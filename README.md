@@ -4,7 +4,7 @@ Shared workstation setup for Linux machines.
 
 ## What This Sets Up
 
-- Base development packages from `packages.txt`
+- Base development packages from `packages.txt` (includes GitHub CLI `gh`)
 - Rust through `rustup`
 - Python 3.14 and tooling through `uv`
 - Node.js through `fnm`
