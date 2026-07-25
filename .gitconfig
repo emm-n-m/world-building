@@ -1,25 +1,54 @@
+[credential "https://git.synelixis.com"]
+	provider = generic
 [core]
 	autocrlf = input
+
+[user]
+	# Default personal config
+	name = emm-n-m
+	email = emm.n.black@gmail.com
+
+[core]
 	editor = vim
-	excludesfile = ~/.gitignore_global
 
 [init]
 	defaultBranch = main
 
-[pull]
-	rebase = true
+# Automatically use work config for Synelixis GitLab repos
+[includeIf "hasconfig:remote.*.url:git@git.synelixis.com:*/**"]
+	path = ~/.gitconfig-gitlab-synelixis
 
-[rebase]
-	autoStash = true
+[includeIf "hasconfig:remote.*.url:https://git.synelixis.com/**"]
+	path = ~/.gitconfig-gitlab-synelixis
 
-[user]
-	# Default personal identity. Work identities are NOT here — they live in
-	# ~/.gitconfig.local (untracked, present only on work machines).
-	name = emm-n-m
-	email = emm.n.black@gmail.com
+[includeIf "hasconfig:remote.*.url:ssh://git@git.synelixis.com/**"]
+	path = ~/.gitconfig-gitlab-synelixis
 
-# Local, machine-specific overrides: work identities, employer credential
-# helpers, internal hosts. A missing file is silently ignored, so personal
-# devices simply use the default identity above. See gitconfig.local.example.
-[include]
-	path = ~/.gitconfig.local
+[includeIf "hasconfig:remote.*.url:ssh://git@git.synelixis.com:*/**"]
+	path = ~/.gitconfig-gitlab-synelixis
+
+# Automatically use ENDURANCE config for GitLab repos
+[includeIf "hasconfig:remote.*.url:git@gitlab.com:*/**"]
+        path = ~/.gitconfig-endurance
+
+[includeIf "hasconfig:remote.*.url:https://gitlab.com/**"]
+	path = ~/.gitconfig-endurance
+
+[includeIf "hasconfig:remote.*.url:ssh://git@gitlab.com/**"]
+	path = ~/.gitconfig-endurance
+
+[includeIf "hasconfig:remote.*.url:ssh://git@gitlab.com:*/**"]
+	path = ~/.gitconfig-endurance
+
+# Automatically use XR50 config for Ubitech repos
+[includeIf "hasconfig:remote.*.url:git@gitlab.ubitech.eu:*/**"]
+        path = ~/.gitconfig-xr50
+
+[includeIf "hasconfig:remote.*.url:https://gitlab.ubitech.eu/**"]
+        path = ~/.gitconfig-xr50
+
+[includeIf "hasconfig:remote.*.url:ssh://git@gitlab.ubitech.eu/**"]
+        path = ~/.gitconfig-xr50
+
+[includeIf "hasconfig:remote.*.url:ssh://git@gitlab.ubitech.eu:*/**"]
+        path = ~/.gitconfig-xr50
