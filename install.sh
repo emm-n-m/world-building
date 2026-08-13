@@ -26,6 +26,7 @@ link_file() {
 link_file "$repo_dir/.bashrc.local" "$HOME/.bashrc.local"
 link_file "$repo_dir/.gitconfig" "$HOME/.gitconfig"
 link_file "$repo_dir/.gitignore_global" "$HOME/.gitignore_global"
+link_file "$repo_dir/githooks" "$HOME/.githooks"
 
 # Personal SSH client config. Work hosts come from ~/.ssh/config.local, which
 # is created per-machine and never symlinked from the repo (see option B).

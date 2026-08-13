@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Strip Claude Code session links from commit messages.
+#
+# Claude Code appends a "Claude-Session: https://claude.ai/code/session_..."
+# trailer to commits it makes. The link is auth-gated, but a public repo is
+# public surface and the session id does not belong in permanent history.
+#
+# Installed machine-wide through core.hooksPath (see .gitconfig), so it applies
+# to every repo rather than needing to be remembered per clone. A repo that
+# needs its own hooks can opt out with:  git config core.hooksPath .git/hooks
+set -euo pipefail
+
+msg_file="$1"
+tmp="$(mktemp)"
+trap 'rm -f "$tmp"' EXIT
+
+# Delete the trailer line and the bare URL form; scrub any remaining URL that
+# sits inside prose, where deleting the whole line would lose the sentence.
+# Then drop blank lines left stranded at the end, so a message does not gain
+# trailing whitespace from the lines that were removed.
+sed -e '/^[[:space:]]*Claude-Session:[[:space:]]*https:\/\/claude\.ai\/code\/session_/d' \
+    -e '/^[[:space:]]*https:\/\/claude\.ai\/code\/session_[[:alnum:]]*[[:space:]]*$/d' \
+    -e 's/https:\/\/claude\.ai\/code\/session_[[:alnum:]]*//g' \
+    "$msg_file" \
+    | awk '{ lines[NR] = $0 }
+           END {
+               last = NR
+               while (last > 0 && lines[last] ~ /^[[:space:]]*$/) last--
+               for (i = 1; i <= last; i++) print lines[i]
+           }' > "$tmp"
+
+cat "$tmp" > "$msg_file"

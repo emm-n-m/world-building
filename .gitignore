@@ -15,3 +15,4 @@ config.local
 ssh_config.local
 # Leftover Windows-origin ssh config copy (superseded by ssh_config)
 /config
+.claude/settings.local.json

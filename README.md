@@ -37,6 +37,7 @@ fnm default lts-latest
 - `.bashrc.local`: aliases and local shell variables.
 - `.gitconfig`: Git defaults + personal identity.
 - `.gitignore_global`: global Git ignore rules.
+- `githooks/`: machine-wide Git hooks (symlinked to `~/.githooks`).
 - `ssh_config`: personal SSH config (symlinked to `~/.ssh/config`).
 - `gitconfig.local.example` / `ssh_config.local.example`: templates for the
   machine-local work config described below.
@@ -66,6 +67,29 @@ chmod 600 ~/.ssh/config.local
 
 Work identities are selected automatically by the repo's remote URL
 (`includeIf "hasconfig:remote.*.url:…"`, requires git >= 2.36).
+
+## Git Hooks (machine-wide)
+
+`.gitconfig` sets `core.hooksPath = ~/.githooks`, which `install.sh` symlinks to
+`githooks/` in this repo. Hooks therefore apply to **every** repo on the machine
+and arrive with a `git pull` — no per-clone setup to remember, which is the
+point: a hook that has to be installed per clone is a hook that will be missing
+on the clone that mattered.
+
+- `commit-msg`: strips Claude Code's `Claude-Session:` trailer, and any bare
+  `https://claude.ai/code/session_…` link, out of commit messages. The links are
+  auth-gated, but session ids do not belong in the permanent history of a public
+  repo. A URL inside a sentence is scrubbed in place rather than deleting the
+  line.
+
+Two consequences worth knowing:
+
+- This overrides `.git/hooks` everywhere. Nothing currently uses it, and tools
+  that set `core.hooksPath` themselves (husky) still win, but a tool that
+  installs *into* `.git/hooks` (pre-commit) would go silent. Opt that repo out
+  with `git config core.hooksPath .git/hooks`.
+- It only guards commits made from here on. History already pushed keeps
+  whatever it has.
 
 ## SSH Keys (per machine)
 
