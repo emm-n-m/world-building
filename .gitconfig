@@ -10,6 +10,12 @@
 
 [core]
 	editor = vim
+	# Machine-wide hooks, symlinked from this repo by install.sh. Currently
+	# commit-msg, which strips Claude Code session links out of commit
+	# messages before they reach history. This overrides .git/hooks in every
+	# repo; one that needs its own opts out with:
+	#   git config core.hooksPath .git/hooks
+	hooksPath = ~/.githooks
 
 [init]
 	defaultBranch = main
@@ -52,3 +58,5 @@
 
 [includeIf "hasconfig:remote.*.url:ssh://git@gitlab.ubitech.eu:*/**"]
         path = ~/.gitconfig-xr50
+[pull]
+	rebase = false

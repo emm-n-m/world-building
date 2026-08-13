@@ -36,7 +36,22 @@ check_link() {  # $1 = target in $HOME, $2 = expected source in repo
 check_link "$HOME/.bashrc.local"     "$repo_dir/.bashrc.local"
 check_link "$HOME/.gitconfig"        "$repo_dir/.gitconfig"
 check_link "$HOME/.gitignore_global" "$repo_dir/.gitignore_global"
+check_link "$HOME/.githooks"         "$repo_dir/githooks"
 check_link "$HOME/.ssh/config"       "$repo_dir/ssh_config"
+
+# --- Git hooks -------------------------------------------------------------
+section "Git hooks"
+configured="$(git config --global --get core.hooksPath || true)"
+if [[ -z "$configured" ]]; then
+    bad "core.hooksPath unset (expected ~/.githooks; run install.sh and git pull)"
+else
+    ok "core.hooksPath = $configured"
+fi
+for hook in "$repo_dir"/githooks/*; do
+    [[ -e "$hook" ]] || continue
+    [[ -x "$hook" ]] && ok "$(basename "$hook") executable" \
+                     || bad "$(basename "$hook") not executable (chmod +x "$hook")"
+done
 
 # --- Packages --------------------------------------------------------------
 section "Packages (packages.txt)"
