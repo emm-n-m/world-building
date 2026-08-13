@@ -59,4 +59,13 @@
 [includeIf "hasconfig:remote.*.url:ssh://git@gitlab.ubitech.eu:*/**"]
         path = ~/.gitconfig-xr50
 [pull]
-	rebase = false
+	# Replay local commits on top of the remote instead of recording a merge.
+	# Working the same repos from several machines otherwise litters history
+	# with "Merge branch 'main' of github.com:..." every time they diverge.
+	# Only rewrites commits that have not been pushed yet.
+	rebase = true
+
+[rebase]
+	# Stash and restore a dirty working tree around the rebase, so a pull with
+	# work in progress does not stop and demand a manual stash first.
+	autoStash = true
