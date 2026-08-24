@@ -13,36 +13,7 @@ Host github.com
     IdentityFile ~/.ssh/id_ed25519
     IdentitiesOnly yes
 
-# GitLab Work Account (Synelixis)
-Host git.synelixis.com
-    HostName git.synelixis.com
-    User git
-    Port 32775
-    IdentityFile ~/.ssh/id_ed25519_gitlab_synelixis
-    IdentitiesOnly yes
-
-# GitLab Endurance Account (Synelixis)
-Host gitlab.com
-    HostName gitlab.com
-    User git
-    IdentityFile ~/.ssh/id_ed25519_endurance
-    IdentitiesOnly yes
-
-# GitLab XR5.0 (Synelixis)
-Host gitlab.ubitech.eu
-    HostName gitlab.ubitech.eu
-    User git
-    Port 41621
-    IdentityFile ~/.ssh/id_ubitech
-
-Host imp
-    HostName imp
-    User imp
-    IdentityFile ~/.ssh/id_ed25519_imp
-    IdentitiesOnly yes
-
-#Imp VM
-# GitHub Personal Account
+# Imp VM
 Host imp
     HostName imp
     User imp

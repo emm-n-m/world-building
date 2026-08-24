@@ -1,5 +1,3 @@
-[credential "https://git.synelixis.com"]
-	provider = generic
 [core]
 	autocrlf = input
 
@@ -20,44 +18,6 @@
 [init]
 	defaultBranch = main
 
-# Automatically use work config for Synelixis GitLab repos
-[includeIf "hasconfig:remote.*.url:git@git.synelixis.com:*/**"]
-	path = ~/.gitconfig-gitlab-synelixis
-
-[includeIf "hasconfig:remote.*.url:https://git.synelixis.com/**"]
-	path = ~/.gitconfig-gitlab-synelixis
-
-[includeIf "hasconfig:remote.*.url:ssh://git@git.synelixis.com/**"]
-	path = ~/.gitconfig-gitlab-synelixis
-
-[includeIf "hasconfig:remote.*.url:ssh://git@git.synelixis.com:*/**"]
-	path = ~/.gitconfig-gitlab-synelixis
-
-# Automatically use ENDURANCE config for GitLab repos
-[includeIf "hasconfig:remote.*.url:git@gitlab.com:*/**"]
-        path = ~/.gitconfig-endurance
-
-[includeIf "hasconfig:remote.*.url:https://gitlab.com/**"]
-	path = ~/.gitconfig-endurance
-
-[includeIf "hasconfig:remote.*.url:ssh://git@gitlab.com/**"]
-	path = ~/.gitconfig-endurance
-
-[includeIf "hasconfig:remote.*.url:ssh://git@gitlab.com:*/**"]
-	path = ~/.gitconfig-endurance
-
-# Automatically use XR50 config for Ubitech repos
-[includeIf "hasconfig:remote.*.url:git@gitlab.ubitech.eu:*/**"]
-        path = ~/.gitconfig-xr50
-
-[includeIf "hasconfig:remote.*.url:https://gitlab.ubitech.eu/**"]
-        path = ~/.gitconfig-xr50
-
-[includeIf "hasconfig:remote.*.url:ssh://git@gitlab.ubitech.eu/**"]
-        path = ~/.gitconfig-xr50
-
-[includeIf "hasconfig:remote.*.url:ssh://git@gitlab.ubitech.eu:*/**"]
-        path = ~/.gitconfig-xr50
 [pull]
 	# Replay local commits on top of the remote instead of recording a merge.
 	# Working the same repos from several machines otherwise litters history
@@ -69,3 +29,10 @@
 	# Stash and restore a dirty working tree around the rebase, so a pull with
 	# work in progress does not stop and demand a manual stash first.
 	autoStash = true
+
+# Work identities, includeIf rules, and employer credential helpers live in
+# ~/.gitconfig.local — untracked, present only on work machines (see
+# gitconfig.local.example). A missing include file is silently skipped, so
+# this is safe on personal-only machines.
+[include]
+	path = ~/.gitconfig.local
