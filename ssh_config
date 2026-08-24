@@ -40,3 +40,11 @@ Host imp
     User imp
     IdentityFile ~/.ssh/id_ed25519_imp
     IdentitiesOnly yes
+
+#Imp VM
+# GitHub Personal Account
+Host imp
+    HostName imp
+    User imp
+    IdentityFile ~/.ssh/id_ed25519_imp
+    IdentitiesOnly yes

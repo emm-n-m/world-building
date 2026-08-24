@@ -41,6 +41,9 @@ echo ""
 
 for dir in "$ROOT"/*/; do
   [ -d "$dir/.git" ] || continue
+  # A symlinked checkout (e.g. knowledge-base -> MagicalLibrary) is the same repo
+  # under a second name; sync it once, under its real name.
+  [ -L "${dir%/}" ] && continue
   name=$(basename "$dir")
 
   branch=$(git -C "$dir" symbolic-ref --short -q HEAD) || {
@@ -56,6 +59,18 @@ for dir in "$ROOT"/*/; do
 
   if ! git -C "$dir" rev-parse --verify -q '@{u}' >/dev/null 2>&1; then
     status "$YELLOW" "$name" "skipped: $branch has no upstream"
+    continue
+  fi
+
+  # Fast-forwarding to @{u} is only "syncing" if @{u} is the remote you develop
+  # against. A branch that tracks a secondary remote (a public mirror pushed once
+  # with -u) reads "up to date" forever while origin moves on — seen with
+  # keycloak-tools tracking public/main for two weeks. Warn, and do not sync it.
+  upstream=$(git -C "$dir" rev-parse --abbrev-ref '@{u}')
+  up_remote=${upstream%%/*}
+  if [ "$up_remote" != origin ] && git -C "$dir" remote | grep -qx origin; then
+    status "$YELLOW" "$name" "skipped: $branch tracks $upstream, not origin — fix: git branch --set-upstream-to=origin/$branch $branch"
+    failures=$((failures + 1))
     continue
   fi
 
