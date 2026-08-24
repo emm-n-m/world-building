@@ -13,7 +13,6 @@ Host github.com
     IdentityFile ~/.ssh/id_ed25519
     IdentitiesOnly yes
 
-<<<<<<< Updated upstream
 # GitLab Work Account (Synelixis)
 Host git.synelixis.com
     HostName git.synelixis.com
@@ -35,10 +34,9 @@ Host gitlab.ubitech.eu
     User git
     Port 41621
     IdentityFile ~/.ssh/id_ubitech
-=======
+
 Host imp
     HostName imp
     User imp
     IdentityFile ~/.ssh/id_ed25519_imp
->>>>>>> Stashed changes
     IdentitiesOnly yes
