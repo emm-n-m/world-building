@@ -7,8 +7,11 @@
 Include ~/.ssh/config.local
 
 # GitHub Personal Account
+# SSH over 443: outbound port 22 is intermittently dropped on this network,
+# so use GitHub's HTTPS-port SSH endpoint instead.
 Host github.com
-    HostName github.com
+    HostName ssh.github.com
+    Port 443
     User git
     IdentityFile ~/.ssh/id_ed25519
     IdentitiesOnly yes
