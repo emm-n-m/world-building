@@ -33,6 +33,8 @@ fnm default lts-latest
 - `install.sh`: symlinks dotfiles into `$HOME`, backing up existing files first.
 - `setup-ssh-keys.sh`: generates this machine's SSH keys and prints the public keys to register.
 - `check.sh`: read-only drift check — verifies symlinks, packages, toolchains, SSH keys, work identities, and repo sync.
+- `move-repo.py`: moves a repository to another parent directory while migrating
+  its local Codex and Claude chats, project trust, and saved permissions.
 - `packages.txt`: apt packages for a baseline development environment.
 - `.bashrc.local`: aliases and local shell variables.
 - `.gitconfig`: Git defaults + personal identity.
@@ -131,3 +133,22 @@ source ~/.bashrc.local
 ```
 
 The installer creates `~/.bashrc.local` as a symlink to this repo.
+
+## Moving A Repository Without Losing Agent History
+
+Codex and Claude both associate local chats and project permissions with an
+absolute checkout path. Use `move-repo.py` when changing a repository's parent
+directory so those records follow the checkout:
+
+```bash
+./move-repo.py --dry-run ~/source/repos/my-project ~/work
+./move-repo.py           ~/source/repos/my-project ~/work
+```
+
+The second argument is the existing destination **parent** directory; the
+example moves the checkout to `~/work/my-project`. Close Codex and Claude
+sessions that are using the repository before running it. The script refuses
+destination/state collisions, handles linked Git worktrees with `git worktree
+move`, and rolls back on failure. Before changing state it writes a recoverable
+backup under `~/.local/state/repo-move/backups/` (or `$XDG_STATE_HOME`). It does
+not copy credentials or put chat data in this repository.
