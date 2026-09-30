@@ -10,6 +10,7 @@ Shared workstation setup for Linux machines.
 - Node.js through `fnm`
 - Global npm tools: `@openai/codex` and `pnpm`
 - Personal shell, Git, and global ignore configuration
+- tmux defaults for persistent Codex / Claude sessions on headless VMs
 
 ## Bootstrap A New Machine
 
@@ -35,12 +36,74 @@ fnm default lts-latest
 - `check.sh`: read-only drift check — verifies symlinks, packages, toolchains, SSH keys, work identities, and repo sync.
 - `packages.txt`: apt packages for a baseline development environment.
 - `.bashrc.local`: aliases and local shell variables.
+- `.tmux.conf`: tmux defaults for detached agent jobs and SSH sessions.
 - `.gitconfig`: Git defaults + personal identity.
 - `.gitignore_global`: global Git ignore rules.
 - `githooks/`: machine-wide Git hooks (symlinked to `~/.githooks`).
 - `ssh_config`: personal SSH config (symlinked to `~/.ssh/config`).
 - `gitconfig.local.example` / `ssh_config.local.example`: templates for the
   machine-local work config described below.
+
+## tmux On Headless VMs
+
+`install.sh` links `.tmux.conf` to `~/.tmux.conf`. It needs tmux 3.2 or newer
+and uses built-in features only. For an existing tmux server, reload it with
+`tmux source-file ~/.tmux.conf` (or `Ctrl-b r` once the binding is loaded).
+The scrollback limit applies to new panes.
+
+Start or reattach to an agent workspace:
+
+```bash
+tmux new-session -A -s agents -c "$HOME/src"
+```
+
+Run `codex` or `claude` in a pane, then press `Ctrl-b d` to detach. Reconnect
+with `tmux attach-session -t agents`. Closing SSH also leaves the jobs running.
+The status bar identifies the VM, session, and current command or exit status.
+
+For an unattended job, supply its command when creating a detached session.
+For example, if your project's `agent-job.sh` invokes your chosen CLI in its
+noninteractive mode, replace the project directory below and run:
+
+```bash
+tmux new-session -d -s agent-job -n run -c "$HOME/src/project" './agent-job.sh'
+tmux list-panes -t agent-job -F '#{pane_id} dead=#{pane_dead} exit=#{pane_dead_status}'
+tmux capture-pane -p -S - -t agent-job:run.0 > agent-job.log
+tmux attach-session -t agent-job
+```
+
+Completed jobs stay visible, including successful ones. `dead=1` means the pane
+has exited; `exit` is the job's status, not the exit code of `tmux new-session`.
+After inspecting it, `tmux respawn-pane -t agent-job:run.0` reruns the original
+command; `tmux kill-session -t agent-job` removes the session when finished.
+Scrollback holds up to 50,000 lines per pane; use your job's own file logging
+when you need a complete record. tmux sessions live in memory and do not survive
+a VM reboot.
+
+Useful keys (press `Ctrl-b`, release it, then press the next key):
+
+| Key | Action |
+| --- | --- |
+| `d` | Detach, leaving jobs running |
+| `c` | New window in the current pane's directory |
+| `%` / `"` | Split side by side / top and bottom in the current directory |
+| Arrow keys | Switch panes |
+| `z` | Zoom or unzoom the current pane |
+| `[` | Enter scrollback; `v` selects, `y` copies, `q` exits |
+| `x` | Confirm closing a pane, including a completed job |
+| `r` | Reload the config |
+
+Mouse reporting stays off for normal terminal selection. Copy mode uses the
+attached terminal's OSC 52 clipboard support where available; no desktop
+clipboard utility is needed on the VM. Put machine-specific overrides in
+`~/.tmux.conf.local`, which loads last and stays out of Git. For example:
+
+```tmux
+set -g mouse on
+set -g history-limit 10000
+```
+
+Option behavior is documented in the [tmux manual](https://man.openbsd.org/tmux.1).
 
 ## Git & SSH Identities (personal vs work)
 

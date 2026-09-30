@@ -34,6 +34,7 @@ check_link() {  # $1 = target in $HOME, $2 = expected source in repo
     fi
 }
 check_link "$HOME/.bashrc.local"     "$repo_dir/.bashrc.local"
+check_link "$HOME/.tmux.conf"        "$repo_dir/.tmux.conf"
 check_link "$HOME/.gitconfig"        "$repo_dir/.gitconfig"
 check_link "$HOME/.gitignore_global" "$repo_dir/.gitignore_global"
 check_link "$HOME/.githooks"         "$repo_dir/githooks"

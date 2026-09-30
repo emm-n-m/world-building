@@ -10,6 +10,7 @@ id_*
 # work identities). The .example templates above are committed; the real files
 # live only in $HOME on the machines that need them.
 .gitconfig.local
+.tmux.conf.local
 .gitconfig-*
 config.local
 ssh_config.local

@@ -24,6 +24,7 @@ link_file() {
 }
 
 link_file "$repo_dir/.bashrc.local" "$HOME/.bashrc.local"
+link_file "$repo_dir/.tmux.conf" "$HOME/.tmux.conf"
 link_file "$repo_dir/.gitconfig" "$HOME/.gitconfig"
 link_file "$repo_dir/.gitignore_global" "$HOME/.gitignore_global"
 link_file "$repo_dir/githooks" "$HOME/.githooks"
